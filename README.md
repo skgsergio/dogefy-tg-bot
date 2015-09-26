@@ -23,6 +23,8 @@ pip install --user pyTelegramBotAPI
 apt-get install python-opencv
 ```
 
+You may need to install `opencv-data` if not working.
+
 * Arch Linux
 ```
 pacman -S opencv
