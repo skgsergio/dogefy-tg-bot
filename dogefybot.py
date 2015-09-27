@@ -95,6 +95,34 @@ def handle_photo(m):
 
         os.unlink(f_id+img_ext)
 
+    elif cid > 0:
+        bot.send_chat_action(cid, 'typing')
+        bot.reply_to(m, 'Very fail, such sad, no faces.')
+
     os.unlink(f_id)
+
+
+@bot.message_handler(commands=['start', 'help'])
+def handle_start_help(m):
+    if (int(time.time()) - time_ignore) > m.date:
+        return
+
+    cid = m.chat.id
+
+    bot.send_chat_action(cid, 'typing')
+    bot.reply_to(m,
+                 """
+                 Hi, I search for faces in sent photos and if I find any I \
+                 replace them for doges. Very wow.
+
+                 I don't have more commands, I'm that simple :D
+
+                 Please rate me at the @storebot following this link: \
+                 https://telegram.me/storebot?start=dogefy_bot
+
+                 This bot is created by @skgsergio.
+                 The source code is licensed under GPLv3 and can be found at \
+                 https://github.com/skgsergio/dogefy-tg-bot
+                 """)
 
 bot.polling()
