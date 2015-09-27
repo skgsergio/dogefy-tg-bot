@@ -68,8 +68,6 @@ def handle_photo(m):
 
     cid = m.chat.id
 
-    bot.send_chat_action(cid, 'upload_photo')
-
     f_id = None
     b_size = 0
     for p in m.photo:
@@ -86,6 +84,8 @@ def handle_photo(m):
 
     n_faces = dogefy(f_id)
     if n_faces > 0:
+        bot.send_chat_action(cid, 'upload_photo')
+
         bot.send_photo(cid,
                        open(f_id+img_ext, 'rb'),
                        caption='Very wow, such doge%s.' %
