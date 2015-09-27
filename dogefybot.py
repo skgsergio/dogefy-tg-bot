@@ -111,18 +111,14 @@ def handle_start_help(m):
 
     bot.send_chat_action(cid, 'typing')
     bot.reply_to(m,
-                 """
-                 Hi, I search for faces in sent photos and if I find any I \
-                 replace them for doges. Very wow.
-
-                 I don't have more commands, I'm that simple :D
-
-                 Please rate me at the @storebot following this link: \
-                 https://telegram.me/storebot?start=dogefy_bot
-
-                 This bot is created by @skgsergio.
-                 The source code is licensed under GPLv3 and can be found at \
-                 https://github.com/skgsergio/dogefy-tg-bot
-                 """)
+                 ("Hi, I search for faces in sent photos and if I find any I"
+                  " replace them for doges. Very wow."
+                  "\n\nI don't have more commands, I'm that simple :D"
+                  "\n\nPlease rate me at the @storebot following this link:"
+                  " https://telegram.me/storebot?start=dogefy_bot"
+                  "\n\nThis bot is created by @skgsergio."
+                  "\nThe source code is licensed under GPLv3 and can be found"
+                  " at https://github.com/skgsergio/dogefy-tg-bot"),
+                 disable_web_page_preview=True)
 
 bot.polling()
