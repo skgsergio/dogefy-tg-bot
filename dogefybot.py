@@ -23,10 +23,11 @@ time_ignore = 5*60
 img_doge = cv2.imread('doge.png', -1)
 img_ext = '_dogefied.png'
 
-# Cascade classifier parameters, can be tricky to adjust
-cc_scale_factor = 1.3
+# Cascade classifier parameters, can be tricky to adjust...
+cc_scale_factor = 1.2
 cc_min_neighbors = 4
-cc_min_size = (10, 10)
+cc_min_size = (20, 20)
+# (1.2 5 30,30) (1.2 5 20,20) (1.3 4 20.20) (1.2 4 20,20)
 
 
 # Dogefy magic happens here (very wow, such magic, many pattern recognition)
