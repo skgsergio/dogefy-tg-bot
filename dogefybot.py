@@ -30,16 +30,16 @@ img_ext = '_dogefied.png'
 
 # Cascade classifier parameters, can be tricky to adjust...
 cc_scale_factor = 1.2
-cc_min_neighbors = 4
+cc_min_neighbors = 5
 cc_min_size = (20, 20)
-# (1.2 5 30,30) (1.2 5 20,20) (1.3 4 20.20) (1.2 4 20,20)
+cc_flags = cv2.CASCADE_SCALE_IMAGE | cv2.CASCADE_DO_ROUGH_SEARCH
 
 
 # Dogefy magic happens here (very wow, such magic, many pattern recognition)
 def dogefy(img_file):
     # Initialize the classifier with the frontal face haar cascades
     face_cc = cv2.CascadeClassifier(('/usr/share/opencv/haarcascades/'
-                                     'haarcascade_frontalface_alt.xml'))
+                                     'haarcascade_frontalface_alt_tree.xml'))
 
     # Read image
     img = cv2.imread(img_file)
@@ -53,7 +53,7 @@ def dogefy(img_file):
                                      scaleFactor=cc_scale_factor,
                                      minNeighbors=cc_min_neighbors,
                                      minSize=cc_min_size,
-                                     flags=cv2.CASCADE_SCALE_IMAGE)
+                                     flags=cc_flags)
 
     # Dogefy all the faces!
     for (x, y, w, h) in faces:
