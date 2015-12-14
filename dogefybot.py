@@ -138,14 +138,17 @@ def handle_start_help(m):
 
     bot.send_chat_action(m.chat.id, 'typing')
     bot.reply_to(m,
-                 ("Hi, I search for faces in sent photos and if I find any I"
-                  " replace them for doges. Very wow."
-                  "\n\nI don't have more commands, I'm that simple :D"
+                 ("Hi, I search for faces in sent photos and if I find any I "
+                  "replace them for *doges*. _Very wow._"
                   "\n\nPlease rate me at the @storebot following this link:"
-                  " https://telegram.me/storebot?start=dogefy_bot"
-                  "\n\nThis bot is created by @skgsergio."
-                  "\nThe source code is licensed under GPLv3 and can be found"
-                  " at https://github.com/skgsergio/dogefy-tg-bot"),
-                 disable_web_page_preview=True)
+                  " https://telegram.me/storebot?start=dogefy\_bot"
+                  "\n\nQ: Why do I need _access to messages_?"
+                  "\nA: In order to get images sent to groups I need it. "
+                  "I don't like it either, I would prefer a system where bot "
+                  "developers can register _atomic permissions_ like "
+                  "_get-image_, _send-image_, _get-audio_, _send-audio_, ..."
+                  "\n\nThe source code is licensed under _GPLv3_ and can be "
+                  "found at https://github.com/skgsergio/dogefy-tg-bot"),
+                 disable_web_page_preview=True, parse_mode="Markdown")
 
 bot.polling(none_stop=True)
