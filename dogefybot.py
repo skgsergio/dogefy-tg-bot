@@ -4,7 +4,6 @@
 import os
 import sys
 import cv2
-import time
 import logging
 import telebot
 
@@ -19,10 +18,7 @@ logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
 # Initialize bot api with token from environment
-bot = telebot.TeleBot(os.environ['DOGEFY_TKN'])
-
-# Ignore messages older than x seconds
-time_ignore = 5*60
+bot = telebot.TeleBot(os.environ['DOGEFY_TKN'], skip_pending=True)
 
 # Doge image and final image extension
 img_doge = cv2.imread('doge.png', -1)
@@ -78,10 +74,6 @@ def dogefy(img_file):
 # Bot photo handler
 @bot.message_handler(content_types=['photo'])
 def handle_photo(m):
-    # Ignore old messages
-    if (int(time.time()) - time_ignore) > m.date:
-        return
-
     # Chat id, for sending actions and file
     cid = m.chat.id
 
@@ -129,12 +121,9 @@ def handle_photo(m):
         pass
 
 
+# Help/Start handler
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(m):
-    # Ignore old messages
-    if (int(time.time()) - time_ignore) > m.date:
-        return
-
     bot.send_chat_action(m.chat.id, 'typing')
     bot.send_message(m.chat.id,
                      ("Hi, I search for faces in sent photos and if I find "
@@ -152,4 +141,5 @@ def handle_start_help(m):
                      disable_web_page_preview=True,
                      parse_mode="Markdown")
 
+# Start the polling
 bot.polling(none_stop=True)
