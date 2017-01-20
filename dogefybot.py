@@ -30,6 +30,10 @@ cc_min_neighbors = 5
 cc_min_size = (20, 20)
 cc_flags = cv2.CASCADE_SCALE_IMAGE | cv2.CASCADE_DO_ROUGH_SEARCH
 
+# Contrast Limited Adaptive Histogram Equalization
+adaptative = True
+clahe_clip = 3.0
+clahe_tile = (8, 8)
 
 # Dogefy magic happens here (very wow, such magic, many pattern recognition)
 def dogefy(img_file):
@@ -42,7 +46,11 @@ def dogefy(img_file):
     # Convert to grays
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # Equalize histogram, for improving contrast (this helps detection)
-    gray = cv2.equalizeHist(gray)
+    if adaptative:
+        clahe = cv2.createCLAHE(clipLimit=clahe_clip, tileGridSize=clahe_tile)
+        gray = clahe.apply(gray)
+    else:
+        gray = cv2.equalizeHist(gray)
 
     # Perform detection
     faces = face_cc.detectMultiScale(gray,
