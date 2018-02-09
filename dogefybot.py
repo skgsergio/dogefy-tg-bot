@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import os
 import sys
 import cv2
@@ -10,15 +12,18 @@ import telebot
 
 # Check for environment variable
 if 'DOGEFY_TKN' not in os.environ:
-    print >> sys.stderr, "Environment variable 'DOGEFY_TKN' not defined."
+    print("Environment variable 'DOGEFY_TKN' not defined.", file=sys.stderr)
     exit(1)
+
 
 # Initialize logger (only logs exceptions and polling status at info+ level)
 logger = telebot.logger
-telebot.logger.setLevel(logging.INFO)
+logger.setLevel(logging.INFO)
 
 # Initialize bot api with token from environment
 bot = telebot.TeleBot(os.environ['DOGEFY_TKN'], skip_pending=True)
+
+botname = bot.get_me().username
 
 # Doge image and final image extension
 img_doge = cv2.imread('doge.png', -1)
@@ -35,16 +40,17 @@ adaptative = True
 clahe_clip = 3.0
 clahe_tile = (8, 8)
 
+
 # Dogefy magic happens here (very wow, such magic, many pattern recognition)
 def dogefy(img_file):
     # Initialize the classifier with the frontal face haar cascades
-    face_cc = cv2.CascadeClassifier(('/usr/share/opencv/haarcascades/'
-                                     'haarcascade_frontalface_alt_tree.xml'))
+    face_cc = cv2.CascadeClassifier('haarcascade_frontalface_alt_tree.xml')
 
     # Read image
     img = cv2.imread(img_file)
     # Convert to grays
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
     # Equalize histogram, for improving contrast (this helps detection)
     if adaptative:
         clahe = cv2.createCLAHE(clipLimit=clahe_clip, tileGridSize=clahe_tile)
@@ -103,6 +109,7 @@ def handle_photo(m):
 
     # Dogefy all the faces!!
     n_faces = dogefy(f_id)
+
     if n_faces > 0:
         # Send "uploading photo" action since can take a few seconds
         bot.send_chat_action(cid, 'upload_photo')
@@ -115,8 +122,8 @@ def handle_photo(m):
 
         try:
             os.unlink(f_id+img_ext)
-        except:  # You shouldn't do this never but... *effort*
-            pass
+        except Exception as e:  # You shouldn't do this never but... *effort*
+            logger.error(e)
 
     # If there is no faces and is not a group tell the user
     elif cid > 0:
@@ -125,13 +132,17 @@ def handle_photo(m):
 
     try:
         os.unlink(f_id)
-    except:  # You shouldn't do this never but... *effort*
-        pass
+    except Exception as e:  # You shouldn't do this never but... *effort*
+        logger.error(e)
 
 
 # Help/Start handler
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(m):
+    cmd = m.text.split()[0]
+    if '@' in cmd and cmd.split('@')[-1] != botname:
+        return
+
     bot.send_chat_action(m.chat.id, 'typing')
     bot.send_message(m.chat.id,
                      ("Hi, I search for faces in sent photos and if I find "
@@ -148,6 +159,7 @@ def handle_start_help(m):
                       "found at https://github.com/skgsergio/dogefy-tg-bot"),
                      disable_web_page_preview=True,
                      parse_mode="Markdown")
+
 
 # Start the polling
 bot.polling(none_stop=True)
