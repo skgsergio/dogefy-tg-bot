@@ -48,8 +48,6 @@ def handle_photo_as_document(m):
     [...]
 ```
 
-* Make compatible with `OpenCV 3`
-
 ## License: GPLv3
 ```
 This program is free software: you can redistribute it and/or modify
