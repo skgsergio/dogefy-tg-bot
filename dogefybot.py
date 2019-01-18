@@ -44,7 +44,7 @@ clahe_tile = (8, 8)
 # Dogefy magic happens here (very wow, such magic, many pattern recognition)
 def dogefy(img_file):
     # Initialize the classifier with the frontal face haar cascades
-    face_cc = cv2.CascadeClassifier('haarcascade_frontalface_alt_tree.xml')
+    face_cc = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 
     # Read image
     img = cv2.imread(img_file)
